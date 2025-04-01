@@ -1,5 +1,6 @@
-package com.example.demo.sample1;
+package com.example.demo.sample2;
 
+import com.example.demo.sample1.Todo;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
