@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <h1>합계와 평균</h1>
+  <h1>합계:<span th:text="${hap}"></span></h1>
+  <h1>평균:<span th:text="${avg}"></span></h1>
+  <hr>
+  <form action="/numbers/add" method="post">
+    <input type="number" name="num" placeholder="정수 입력....">
+    <button>추가하기</button>
+  </form>
+</body>
+</html>

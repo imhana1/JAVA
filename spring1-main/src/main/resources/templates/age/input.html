@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <h1>나이 입력</h1>
+  <form action="/age" method="post">
+    <select name="birthYear">
+      <!--
+        selected, disabled, checked, readonly 속성은 존재 여부에 따라 적용(값은 따로 없다)
+        selected는 select의 기본선택값
+        readonly는 읽기 전용(선택은 가능)
+        disabled는 선택도 안된다
+        checked는 체크박스에....(요즘 체크박스를 거의 사용 X)
+      -->
+      <option selected disabled>태어난 년도 선택</option>
+      <option>1996</option>
+      <option>1997</option>
+      <option>1998</option>
+      <option>1999</option>
+      <option>2000</option>
+      <option>2001</option>
+      <option>2002</option>
+      <option>2003</option>
+      <option>2004</option>
+      <option>2005</option>
+    </select>
+    <input type="text" name="name" placeholder="이름 입력...">
+    <button>보내기</button>
+  </form>
+</body>
+</html>

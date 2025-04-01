@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<!-- 서버에서 받아온거 일단 찍자 -->
+<div th:text="${todo}"></div>
+<ul>
+<!-- 자바 코드로는 todo.getTno()인데 타임리프는 ${todo.tno} -->
+<!-- @Getter가 있어서 todo.tno 이런 형시으로 적을 수 있는거야 "스프링에서 마드는 클래스는 무조건 getter 만들면 됨~"-->
+  <li th:text="${todo.tno}"></li>
+  <li th:text="${todo.title}"></li>
+  <li th:text="${todo.finish}"></li>
+</ul>
+<div th:if="${todo.finish==true}">
+  <input type="text" name="title" th:value="${todo.title}" disabled>
+</div>
+<div th:if="${todo.finish==false}">
+<!-- 편집가능하게 만들거야 -->
+  <input type="text" name="title" th:value="${todo.title}">
+  <button>변경하기</button>
+</div>
+</body>
+</html>

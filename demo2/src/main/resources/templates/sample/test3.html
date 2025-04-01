@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<!-- html 요소에서 잘못된 속성 이름을 사용하면 그냥 무시 -->
+<div th:if="${sungjuck.score>=70}">
+  <div>이름: <span th:text="${sungjuck.name}"></span></div>
+  <div>결과: 합격</div>
+  <div>점수: <span th:text="${sungjuck.score}"></span></div>
+</div>
+<div th:if="${sungjuck.score<70}">
+  <div>이름: <span th:text="${sungjuck.name}"></span></div>
+  <div>결과: 불합격</div>
+  <div>점수: <span th:text="${sungjuck.score}"></span></div>
+</div>
+<!-- 삼항연산자 사용하면 -->
+<div th:text="${sungjuck.score>=70? '합격입니다':'불합격입니다'}"></div>
+<!-- 응용으로 합격이면 합격자등록 버튼 뜨는거 만들기 -->
+<button th:if="${sungjuck.score>=70}">합격자등록</button>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <h1>타임리프는 속성 형식으로 값을 출력</h1>
+  <h1>화면을 디자인할 때 타임리프 파일을 단독 실행하면 그냥 타임리프 속성이 무시된다(에러 X)</h1>
+  <h1 th:text="${a}"></h1>
+  <h1 th:text="${b}"></h1>
+  <h1 th:text="${a+b}"></h1>
+</body>
+</html>

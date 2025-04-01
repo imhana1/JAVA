@@ -1,0 +1,57 @@
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+### Build ###
+target/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+### Gradle ###
+.gradle/
+!gradle-wrapper.jar
+**/gradle-wrapper.properties
+
+### Logs ###
+logs/
+*.log
+*.log.*
+
+### OS ###
+# Windows
+Thumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+
+### Dependency Management ###
+**/dependency-reduced-pom.xml
+
+### Test ###
+**/test-output/
+
+### Spring Boot ###
+!**/src/main/**/resources/
+!**/src/test/**/resources/
+
+### Env ###
+.env
+*.env
+application*.properties
+application*.yml
+
+### Etc ###
+*.swp
+*.bak
+*.tmp
+*.orig
+*.class
+*.jar
+*.war
+*.ear
+*.nar
