@@ -16,6 +16,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Supply {
+    // 번호 : Supply 객체들을 구별 (기본키, 예) 주소, 주민번호)
+    //       기본키 값을 주면 객체가 1개만 나온다
     private Integer sno;
     private String name;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
