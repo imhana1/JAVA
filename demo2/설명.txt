@@ -66,6 +66,23 @@
 - 405 : 잘못된 메소드
 - 500 : 서버에서 처리 중 오류
 
+9. 데이터베이스 연결
+- javax.sql.Connection : 데이터베이스와 연결하는 객체
+                         객체생성 -> sql 을 실행 -> 해제(비효율적)
+- javax.sql.Datasource
+    연결 객체를 미리 만들어 놓고 사용자들이 연결을 빌려서 사용 후 반납
+    이렇게 빌려서 사용 후 반납 가능한 연결 표준을 DataSource 라고 한다
+- 스프링부트는 스프링 프레임워크 + 자동 설정 기능을 추가
+    수동으로 spring security 를 추가하는 경우
+        maven 사이트에서 spring security 가 아니라 spring security starter 를 검색
+- mybatis 나 JPA 같은 DAO 프레임 워크 (ORM)을 추가하면 DataSource 기능까지 자동으로 추가
+    스프링 부트는 DataSource 구현체로 Hikari 를 사용한다
+
+10. ComponentScan
+- 스프링이 스프링빈으로 생성할 객체를 찾는 위치 지정
+- 기본 컴포넌트 스캔 경로는 프로젝트를 생성할 때 지정한 패키지의 하위 패키지다
+- com.example.demo 로 생성한 경우
+
 
 
 
