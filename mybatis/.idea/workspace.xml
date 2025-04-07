@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ef16ca9-6a10-48e5-b24c-089efbb72497" name="Changes" comment="몰라" />
+    <list default="true" id="3ef16ca9-6a10-48e5-b24c-089efbb72497" name="Changes" comment="몰라">
+      <change beforePath="$PROJECT_DIR$/../mybatis2/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../mybatis2/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -104,6 +106,7 @@
       <updated>1743744491960</updated>
       <workItem from="1743744493364" duration="973000" />
       <workItem from="1743745894732" duration="177000" />
+      <workItem from="1743987157357" duration="22000" />
     </task>
     <task id="LOCAL-00001" summary="몰라">
       <option name="closed" value="true" />
