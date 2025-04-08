@@ -11,7 +11,7 @@ public interface MemoDao {
     @Insert("insert into memo(mno, title, content, writer) values(#{mno}, #{title}, #{content}, #{writer})")
     public int save(Memo memo);
 
-    @Select("select * from memo")
+    @Select("select * from memo order by mno desc")
     public List<Memo> findAll();
 
     @Select("select * from memo where mno = #{mno} and rownum = 1")
