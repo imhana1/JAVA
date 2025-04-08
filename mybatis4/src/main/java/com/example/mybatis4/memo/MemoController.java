@@ -44,7 +44,7 @@ public class MemoController {
     }
 
     @PostMapping("/memo/delete")
-    public ModelAndView delete(@ModelAttribute Integer mno) {
+    public ModelAndView delete(@RequestParam Integer mno) {
         memoService.delete(mno);
         return new ModelAndView("redirect:/memo/list");
     }
