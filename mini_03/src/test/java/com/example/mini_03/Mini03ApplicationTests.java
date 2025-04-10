@@ -1,13 +1,13 @@
-package com.example.mini_03;
+package com.example.mybatis5;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Mini03ApplicationTests {
+class Mybatis5ApplicationTests {
 
-  @Test
-  void contextLoads() {
-  }
+    @Test
+    void contextLoads() {
+    }
 
 }
