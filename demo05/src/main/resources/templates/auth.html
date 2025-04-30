@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <div sec:authorize="isAuthenticated()">
+    권한: <span sec:authentication="principal.authorities"></span>
+    <form action="/logout" method="post">
+      <button>로그아웃</button>
+    </form>
+  </div>
+  <h1>로그인해야 접근 가능</h1>
+</body>
+</html>

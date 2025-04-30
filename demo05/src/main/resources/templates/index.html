@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <div th:text="${msg}"></div>
+  <div sec:authorize="isAuthenticated()">
+    권한: <span sec:authentication="principal.authorities"></span>
+    <form action="/logout" method="post">
+      <button>로그아웃</button>
+    </form>
+  </div>
+  <h1>누구나 접근 가능</h1>
+  <ul>
+    <li><a href="/auth">로그인만 접근</a></li>
+    <li><a href="/non_auth">비로그인만 접근</a></li>
+    <li><a href="/user">ROLE_USER 전용</a></li>
+    <li><a href="/admin">ROLE_ADMIN 전용</a></li>
+  </ul>
+</body>
+</html>
