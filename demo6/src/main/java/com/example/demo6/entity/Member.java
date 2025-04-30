@@ -1,5 +1,6 @@
 package com.example.demo6.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.web.multipart.*;
 
@@ -12,6 +13,7 @@ import java.time.*;
 public class Member {
   // 사용자에게 받아올 값
   private String username;
+  @JsonIgnore
   private String password;
   private String email;
   // 프로필 사진 이름

@@ -17,6 +17,7 @@ import java.util.*;
 public class MemberService {
   @Autowired
   private MemberDao memberDao;
+  private PostDao postDao;
 
   public boolean checkUsername(MemberDto.UsernameCheck dto) {
     return !memberDao.existsByUsername(dto.getUsername());
@@ -70,4 +71,26 @@ public class MemberService {
     memberDao.updatePassword(dto.getUsername(), newPassword);
     return Optional.ofNullable(newPassword);
   }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
