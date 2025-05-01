@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.Map;
 
 @Validated
 @RestController
@@ -32,7 +33,7 @@ public class PostController {
     // - pno 가 111이라면 get  /posts/111, 그런데 값을 안넘겼다면 get  /posts.  즉, 주소가 아예 다르다
     @Operation(summary = "글 읽기", description = "글 읽기")
     @GetMapping("/posts/post")
-    public ResponseEntity<Post> findByPno(@RequestParam int pno, Principal principal) {
+    public ResponseEntity<Map<String, Object>> findByPno(@RequestParam int pno, Principal principal) {
         // 로그인했으면 로그인 아이디, 비로그인이면 null 을 대입
         String loginId = principal == null ? null : principal.getName();
         return ResponseEntity.ok(service.findByPno(pno, loginId));

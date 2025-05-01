@@ -7,6 +7,7 @@ import com.example.demo6.util.*;
 import jakarta.validation.*;
 import org.apache.commons.lang3.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.*;
 import org.springframework.web.multipart.*;
 
@@ -18,6 +19,8 @@ public class MemberService {
   @Autowired
   private MemberDao memberDao;
   private PostDao postDao;
+  @Autowired
+  private PasswordEncoder encoder;
 
   public boolean checkUsername(MemberDto.UsernameCheck dto) {
     return !memberDao.existsByUsername(dto.getUsername());
@@ -35,7 +38,7 @@ public class MemberService {
 //    return member;
 
     // 1. 비밀번호 암호화
-    String encodedPassword = dto.getPassword();
+    String encodedPassword = encoder.encode(dto.getPassword());
     // 2. 프사를 업로드 했다면 저장을 위해 base64 인코딩
     MultipartFile profile = dto.getProfile();
     // <input type='file' name='profile'> 이렇게 input 이 있지만 선택은 하지 않음 → null은 아님

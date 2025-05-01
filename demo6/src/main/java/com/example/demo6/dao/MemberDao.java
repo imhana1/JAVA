@@ -22,4 +22,6 @@ public interface MemberDao {
   @Update("update members set password=#{newPassword} where username=#{username}")
   void updatePassword(String username, String newPassword);
 
+  @Select("select username, password, role, is_lock from members where username=#{username}")
+  Optional<Member> loadLoginData(String username);
 }

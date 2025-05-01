@@ -23,13 +23,14 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    /*
+
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     testImplementation 'org.springframework.security:spring-security-test'
-     */
+
     // 랜덤한 문자열 생성
     implementation("org.apache.commons:commons-lang3:3.17.0")
     // log4jdbc
@@ -48,7 +49,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-
 tasks.named('test') {
     useJUnitPlatform()
 }
