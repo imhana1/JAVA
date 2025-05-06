@@ -21,7 +21,7 @@ public class PostDaoTest {
   }
 
 //  @Test
-  public void 페이징리퀘스트() {
+  public void 페이징쿼리퀘스트() {
     // pageno 가 1이므로 123~114번까지 출력
     postDao.findAll(1, 10).forEach(post->System.out.println(post.getPno()));
 
@@ -33,4 +33,6 @@ public class PostDaoTest {
   public void findByPnoWithCommentsTest() {
     System.out.println(postDao.findByPnoWithComments(10));
   }
+}
+
 }

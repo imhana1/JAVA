@@ -75,6 +75,25 @@ public class MemberService {
     return Optional.ofNullable(newPassword);
   }
 
+  public MemberDto.Read read(String loginId) {
+    Member member = memberDao.findByUsername(loginId);
+    return member.toRead();
+  }
+
+  public boolean changePassword(MemberDto.PasswordChange dto, String loginId) {
+    // 기존 암호화된 비밀번호를 읽어와 비밀번호가 맞는 지 확인하는 과정이 필요함
+    // 비밀번호가 일치한 경우 새 비밀번호로 업데이트 → 틀리면 false
+    String encodedPassword = memberDao.findPasswordByUsername(loginId);
+    if(encoder.matches(dto.getCurrentPassword(), encodedPassword))
+      return false;
+    // 비밀번호가 일치한 경우 새 비밀번호로 업데이트
+    return memberDao.updatePassword(loginId, encoder.encode(dto.getNewPassword()))==1;
+  }
+
+
+  public void resign(String loginId) {
+    memberDao.delete(loginId);
+  }
 }
 
 
