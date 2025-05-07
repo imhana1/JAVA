@@ -20,7 +20,7 @@ public interface MemberDao {
   boolean existsByUsernameAndEmail(MemberDto .GeneratePassword dto);
 
   @Update("update members set password=#{newPassword} where username=#{username}")
-  void updatePassword(String username, String newPassword);
+  int updatePassword(String username, String newPassword);
 
   @Select("select username, password, role, is_lock from members where username=#{username}")
   Optional<Member> loadLoginData(String username);
