@@ -1,6 +1,7 @@
 package com.example.demo6.advice;
 
 import com.example.demo6.exception.EntityNotFoundException;
+import com.example.demo6.exception.JobFailException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,12 @@ public class ProcessingFaultAdvice {
   // 사용자 정의 : 엔티티 클래스 (회원, 글, 댓글) 가 없을 때
   @ExceptionHandler(EntityNotFoundException.class)
   public ResponseEntity<String> entityNotFoundException(EntityNotFoundException e) {
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+  }
+
+  // 사용자 정의 : 작업이 실패했을때
+  @ExceptionHandler(JobFailException.class)
+  public ResponseEntity<String> JobFailException(JobFailException e){
     return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
   }
 }

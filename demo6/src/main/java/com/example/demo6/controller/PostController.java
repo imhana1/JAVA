@@ -10,21 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Map;
 
-// @Validated 는 스프링 검증, 없으면 자바 표준 검증 수행. 스프링 검증이 좀 더 간략함
 @Validated
 @RestController
 public class PostController {
     @Autowired
     private PostService service;
 
-    @Operation(summary = "페이징", description = "기본페이지 번호 1, 기본 페이지 크기 10으로 페이징")
+    @Operation(summary = "페이징", description = "기본 페이지번호 1, 페이지 크기 10으로 페이징")
     @GetMapping("/posts")
     public ResponseEntity<PostDto.Pages> findAll(@RequestParam(defaultValue = "1") int pageno,
                                                  @RequestParam(defaultValue = "10") int pagesize) {
@@ -97,4 +95,22 @@ public class PostController {
         int newGoodCnt = service.추천(pno, principal.getName());
         return ResponseEntity.ok(newGoodCnt);
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -28,6 +28,7 @@ public class MemberController {
   private MemberService service;
 
   // ↓ swagger 어노테이션
+  @PreAuthorize("isAnonymous()")
   @Operation(summary = "아이디 확인", description = "아이디가 사용 가능한 지 확인")
   @GetMapping("/api/members/check-username")
   public ResponseEntity<String> checkUsername(@ModelAttribute @Valid MemberDto.UsernameCheck dto, BindingResult br) {
@@ -42,7 +43,7 @@ public class MemberController {
     return ResponseEntity.status(HttpStatus.CONFLICT).body("사용중인 아이디 입니다");
   }
 
-
+  @PreAuthorize("isAnonymous()")
   @Operation(summary = "회원가입", description = "회원가입 및 프로필 사진 업로드")
   @PostMapping(value = "/api/members/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // consumes : 컨트롤러로 들어오는 파일 형식 지정
   // 모든 어노테이션은 value 라는 값을 가짐 그래서 ↑ 는 value
@@ -52,6 +53,7 @@ public class MemberController {
     return ResponseEntity.status(200).body(member);
   }
 
+  @PreAuthorize("isAnonymous()")
   @Operation(summary = "아이디 찾기", description = "가입한 이메일로 아이디를 찾는다")
   @GetMapping("/api/members/username")
   public ResponseEntity<String> searchUsername(@RequestParam @Email String email) {
@@ -62,6 +64,7 @@ public class MemberController {
     return ResponseEntity.status(HttpStatus.CONFLICT).body("사용자를 찾을 수 없습니다");
   }
 
+  @PreAuthorize("isAnonymous()")
   @Operation(summary = "임시 비밀번호 발급", description = "아이디와 이메일로 임시 비밀번호를 발급")
   @PutMapping("/api/members/password")
   public ResponseEntity<String> getTemporaryPassword(@ModelAttribute @Valid MemberDto.GeneratePassword dto, BindingResult br) {
