@@ -9,6 +9,6 @@ import lombok.Getter;
 // 스프링 예외처리는 보통 체크하지 않는 예외를 사용한다 → RuntimeException 은 직접 사용하기에는 너무 광범위함
 @AllArgsConstructor
 @Getter
-public class EntityNotFoundException extends RuntimeException {
+public class JobFailException extends RuntimeException {
   private String message;
 }

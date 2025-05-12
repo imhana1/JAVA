@@ -8,6 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface CommentDao {
-    @Select("select * from COMMENTS where PNO=#{pno}")
-    List<Comment> findByPno(int pno);
+  @Select("select * from comments where pno=#{pno}")
+  List<Comment> findByPno(int pno);
 }

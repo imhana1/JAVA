@@ -2,10 +2,12 @@ package com.example.demo6.entity;
 
 import com.example.demo6.dto.MemberDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import org.springframework.web.multipart.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.time.*;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 @Getter
@@ -15,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 public class Member {
   // 사용자에게 받아올 값
   private String username;
+  // 아예 출력되지 않음 (진짜. 네버. 절대)
   @JsonIgnore
   private String password;
   private String email;

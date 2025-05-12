@@ -1,14 +1,19 @@
 package com.example.demo6.dto;
 
-import com.example.demo6.entity.*;
+import com.example.demo6.entity.Level;
+import com.example.demo6.entity.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.*;
-import lombok.*;
-import org.springframework.web.multipart.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
 public class MemberDto {
+
   @Data
   public static class UsernameCheck {
     @NotEmpty

@@ -1,10 +1,13 @@
 package com.example.demo6.dao;
 
-import com.example.demo6.dto.*;
-import com.example.demo6.entity.*;
-import org.apache.ibatis.annotations.*;
+import com.example.demo6.dto.MemberDto;
+import com.example.demo6.entity.Member;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
-import java.util.*;
+import java.util.Optional;
 
 @Mapper
 public interface MemberDao {
@@ -45,5 +48,4 @@ public interface MemberDao {
 
   @Delete("delete from members where username=#{loginId}")
   int delete(String loginId);
-
 }

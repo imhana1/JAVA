@@ -1,24 +1,22 @@
 package com.example.demo6.service;
 
-import com.example.demo6.dao.*;
-import com.example.demo6.dto.*;
-import com.example.demo6.entity.*;
-import com.example.demo6.util.*;
-import jakarta.validation.*;
-import org.apache.commons.lang3.*;
-import org.springframework.beans.factory.annotation.*;
+import com.example.demo6.dao.MemberDao;
+import com.example.demo6.dto.MemberDto;
+import com.example.demo6.entity.Member;
+import com.example.demo6.util.Demo6Util;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.*;
-import org.springframework.web.multipart.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class MemberService {
   @Autowired
   private MemberDao memberDao;
-  private PostDao postDao;
   @Autowired
   private PasswordEncoder encoder;
 
@@ -39,17 +37,24 @@ public class MemberService {
 
     // 1. 비밀번호 암호화
     String encodedPassword = encoder.encode(dto.getPassword());
-    // 2. 프사를 업로드 했다면 저장을 위해 base64 인코딩
+
+    // 2. 프사를 업로드 했다면 저장을 위해 base64 인코딩, 프사 확인 (업로드하지 않았다면 기본 프사를 저장)
     MultipartFile profile = dto.getProfile();
+    // 프론트에 <input type='file' name='profile'> 이 없다면 profile 이 null 이 된다
+    // 이 경우 profile.isEmpty() 는 null pointer exception(NPE)
+    boolean 프사_존재 = profile!=null && !profile.isEmpty();
     // <input type='file' name='profile'> 이렇게 input 이 있지만 선택은 하지 않음 → null은 아님
     // <input type='text' name='username'> → 입력을 하지 않았다 → 서버에서 꺼내면 null 이 아니라 ""
     String base64Image = "";
-    if(!profile.isEmpty()) {
-      try {
+    try {
+      if(프사_존재) {
+        // 사용자가 업로드한 이미지를 base64 로 바꾸는 함수는 실패할 수 있다
         base64Image = Demo6Util.convertToBase64(profile);
-      } catch(IOException e) {
-        e.printStackTrace();
+      } else {
+        base64Image = Demo6Util.getDefaultBase64Profile();
       }
+    } catch(IOException e) {
+
     }
     // 3. 암호화된 비밀번호, base64 이미지를 가지고 dto 를 member 로 변환
     Member member = dto.toEntity(encodedPassword, base64Image);
@@ -90,29 +95,7 @@ public class MemberService {
     return memberDao.updatePassword(loginId, encoder.encode(dto.getNewPassword()))==1;
   }
 
-
   public void resign(String loginId) {
     memberDao.delete(loginId);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

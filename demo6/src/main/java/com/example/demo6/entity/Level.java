@@ -1,6 +1,7 @@
 package com.example.demo6.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
