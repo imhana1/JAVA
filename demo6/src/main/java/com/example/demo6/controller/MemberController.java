@@ -50,6 +50,7 @@ public class MemberController {
   // rest 는 동사로 주소를 만들지 않음 명사 아니면 형용사를 주로 사용함
   public ResponseEntity<Member> signup (@ModelAttribute @Valid MemberDto.Create dto, BindingResult br) {
     Member member = service.signup(dto);
+    System.out.println("200 응답");
     return ResponseEntity.status(200).body(member);
   }
 
@@ -78,7 +79,7 @@ public class MemberController {
   // 내 정보 보기
   @PreAuthorize("isAuthenticated()")
   @Operation(summary = "내 정보 보기", description = "내 정보 보기")
-  @GetMapping("api/members/member")
+  @GetMapping("/api/members/member")
   public ResponseEntity<MemberDto.Read> read(Principal principal) {
     MemberDto.Read dto = service.read(principal.getName());
     return ResponseEntity.ok(dto);

@@ -2,6 +2,7 @@ package com.example.demo6.service;
 
 import com.example.demo6.dao.CommentDao;
 import com.example.demo6.dao.PostDao;
+import com.example.demo6.dao.postMemberBadDao;
 import com.example.demo6.dao.postMemberGoodDao;
 import com.example.demo6.dto.PostDto;
 import com.example.demo6.entity.Comment;
@@ -9,6 +10,7 @@ import com.example.demo6.entity.Post;
 import com.example.demo6.exception.EntityNotFoundException;
 import com.example.demo6.exception.JobFailException;
 import com.example.demo6.util.Demo6Util;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ public class PostService {
     private CommentDao commentDao;
     @Autowired
     private postMemberGoodDao postMemberGoodDao;
+    @Autowired
+    private postMemberBadDao postMemberBadDao;
     private static final int BLOCK_SIZE = 5;
 
     public PostDto.Pages findAll(int pageno, int pagesize) {
@@ -96,12 +100,40 @@ public class PostService {
         Post post = postDao.findByPno(pno).orElseThrow(() -> new EntityNotFoundException("글을 찾을 수 없습니다"));
         if (post.getWriter().equals(loginId))
             throw new JobFailException("자신의 글은 추천할 수 없습니다");
-        boolean 추천했니 = postMemberGoodDao.existsByPnoAndUsername(pno, loginId);
+        boolean 추천했니 = postMemberGoodDao.existByPnoAndUsername(pno, loginId);
         if (추천했니)
             throw new JobFailException("이미 추천했습니다");
         postMemberGoodDao.save(pno, loginId);
         postDao.increaseGoodCnt(pno);
         return postDao.findGoodCntByPno(pno);
+    }
+
+    public int 비추천(int pno, String loginId) {
+        // 글 없으면 예외처리
+        Post post = postDao.findByPno(pno).orElseThrow(()->new EntityNotFoundException("글을 찾을 수 없습니다"));
+        // 본인이 작성한 글이면 비추천 불가
+        if(post.getWriter().equals(loginId))
+            throw new JobFailException("자신의 글은 비추천할 수 없습니다");
+        // 비추천 했는지 유무 확인
+        boolean 비추천여부 = postMemberBadDao.existByUsernameAndPno(pno, loginId);
+        boolean 추천여부 = postMemberGoodDao.existByPnoAndUsername(pno, loginId);
+        // 추천하지 않았으면 비추테이블 추가 + 비추+1
+        if(!비추천여부) {
+            // 만약 추천을 했으면 추천테이블에서 삭제 + 추천-1
+            if(추천여부) {
+                postMemberGoodDao.remove(pno, loginId);
+                postDao.decreaseGoodCnt(pno);
+            }
+            postMemberBadDao.save(pno, loginId);
+            postDao.increaseBadCnt(pno);
+        }
+        else {// 추천했으면 비추테이블 삭제 + 비추-1
+            postMemberBadDao.remove(pno, loginId);
+            postDao.decreaseBadCnt(pno);
+        }
+        // 새로운 비추천 수 리턴
+        return postDao.findBadCntByPno(pno).get();
+        // findbadcntbypno 리턴타입이 optional인데 지금 메소드의 리턴타입은 int니까 get()으로 값 꺼내주기
     }
 }
 

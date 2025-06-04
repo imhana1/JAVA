@@ -24,7 +24,7 @@ public class PostController {
     private PostService service;
 
     @Operation(summary = "페이징", description = "기본 페이지번호 1, 페이지 크기 10으로 페이징")
-    @GetMapping("/posts")
+    @GetMapping("/api/posts")
     public ResponseEntity<PostDto.Pages> findAll(@RequestParam(defaultValue = "1") int pageno,
                                                  @RequestParam(defaultValue = "10") int pagesize) {
         return ResponseEntity.ok(service.findAll(pageno, pagesize));
@@ -35,7 +35,7 @@ public class PostController {
     // ㄴ 만약 ↓ 주소에서 pno 를 넘기지 않았다면 get /posts 가 돼서 주소가 달라지게 된다
     // ㄴ pno 가 111 이라면 get /posts/111, 그런데 값을 안 넘겼다면 get /posts. 즉, 주소가 아예 다르다
     @Operation(summary = "글읽기", description = "글읽기")
-    @GetMapping("/posts/post/{pno}")
+    @GetMapping("/api/posts/post/{pno}")
     public ResponseEntity<Map<String, Object>> findByPno(@PathVariable int pno, Principal principal) {
         // 로그인 했으면 로그인 아이디, 비로그인이면 null 을 대입
         String loginId = principal == null ? null : principal.getName();
@@ -61,7 +61,7 @@ public class PostController {
     @Operation(summary = "글쓰기")
     @PreAuthorize("isAuthenticated()") // 관리자도 글 작성이 가능함 (로그인한 아이디만 검열함)
     @Secured("ROLE_USER") // 실제 게시판을 만들 때는 Secured 를 쓰는 게 더 낫다 (Secured 는 관리자 계정으로는 작성 불가능)
-    @PostMapping("/posts/new")
+    @PostMapping("/api/posts/new")
     public ResponseEntity<Post> write(@ModelAttribute @Valid PostDto.Write dto, BindingResult br, Principal principal) {
         // 작성한 글을 그대로 쏴주기
         // 보통 관습적으로 엔티티를 쏴준다
@@ -71,7 +71,7 @@ public class PostController {
     }
 
     @Secured("ROLE_USER")
-    @PutMapping("/posts/post")
+    @PutMapping("/api/posts/post")
     @Operation(summary = "글변경", description = "글번호로 제목과 내용 변경")
     public ResponseEntity<String> update(@ModelAttribute @Valid PostDto.Update dto, BindingResult br, Principal principal) {
         // 글 쓴 사람이 맞나 확인해야 하기에 principal 이 있어야함
@@ -80,7 +80,7 @@ public class PostController {
     }
 
     @Secured("ROLE_USER")
-    @DeleteMapping("/posts/post")
+    @DeleteMapping("/api/posts/post")
     @Operation(summary = "삭제")
     public ResponseEntity<String> delete(@RequestParam @NotNull Integer pno, Principal principal) {
         // 만약 pno 를 검열하려면 NotNull 이 필요함 ! 꼭 NotNull 로 검열해주기
@@ -90,11 +90,19 @@ public class PostController {
     }
 
     @Secured("ROLE_USER")
-    @PutMapping("/posts/good")
+    @PutMapping("/api/posts/good")
     @Operation(summary = "글 추천", description = "이미 추천한 글은 재추천 불가")
     public ResponseEntity<Integer> 추천(@RequestParam @NotNull Integer pno, Principal principal) {
         int newGoodCnt = service.추천(pno, principal.getName());
         return ResponseEntity.ok(newGoodCnt);
+    }
+
+    @Secured("ROLE_USER")
+    @PutMapping("/api/posts/bad")
+    @Operation(summary = "비추천", description = "이미 비추천했다면 비추천 취소 / 추천한 글을 비추천하면 추천 취소 후 비추천")
+    public ResponseEntity<Integer> 비추천(@RequestParam @NotNull Integer pno, Principal principal) {
+        int newBadCnt = service.비추천(pno, principal.getName());
+        return ResponseEntity.ok(newBadCnt);
     }
 
 }

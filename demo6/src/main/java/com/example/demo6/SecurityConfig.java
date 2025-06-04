@@ -1,18 +1,20 @@
 package com.example.demo6;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import lombok.*;
+import org.springframework.context.annotation.*;
+import org.springframework.security.config.annotation.method.configuration.*;
+import org.springframework.security.config.annotation.web.builders.*;
+import org.springframework.security.crypto.bcrypt.*;
+import org.springframework.security.crypto.password.*;
+import org.springframework.security.web.*;
+import org.springframework.security.web.access.*;
+import org.springframework.security.web.authentication.*;
+import org.springframework.security.web.authentication.logout.*;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @EnableMethodSecurity(securedEnabled = true)
 @Configuration
@@ -42,14 +44,28 @@ public class SecurityConfig {
     //        사용자가 작업한 html 파일이 서버가 보내준 파일이 맞는지, 혹시 사용자가 html 을 조작하지 않았는지
     //        확인하기 위한 랜덤 문자열이라고 생각하면 됨
     //        화면이 없는 rest 에는 의미없는 개념이니 꺼준 거임
+    config.cors(cors->cors.configurationSource(corsConfigurationSource()));
     config.csrf(csrf->csrf.disable());
     // 화면에 아이디와 비밀번호를 입력해서 로그인하는 formLogin 을 활성화
     config.formLogin(form->form.loginPage("/login").loginProcessingUrl("/login")
-        .successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler));
+            .successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler));
     config.logout(logout->logout.logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler));
     config.exceptionHandling(handler->
-        handler.accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(authenticationEntryPoint));
+            handler.accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(authenticationEntryPoint));
     return config.build();
+  }
+
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowedOriginPatterns(Arrays.asList("*"));
+    config.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "PATCH", "DELETE"));
+    config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+    config.setAllowCredentials(true);
+
+    UrlBasedCorsConfigurationSource src = new UrlBasedCorsConfigurationSource();
+    src.registerCorsConfiguration("/**", config);
+    return src;
   }
 
 }
