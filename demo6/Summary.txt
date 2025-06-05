@@ -35,3 +35,30 @@
 
 * session이라는 개념은 웹브라우저용 -> 아이폰, 안드로이드 등은 사용x 웹브라우저 사용해야 쿠키나 세션 사용 가능
     수동으로 쿠키 저장하는 코드 짜고 자동으로 보내게 하면 개념상으로는 가능은 하긴 해 = 내가 웹브라우저역할을 대신해야해
+
+
+# 이메일 발송 : SMTP, 이메일 수신 : POP3, IMAP
+# gmail, naver 를 사용했는데? gmail 이나 naver 가 대신 해줌
+
+메일 인증 지메일 설정 잡기
+구글 로그인
+2단계인증 활성화
+계정 관리
+보안
+앱비밀번호 페이지 이동 (검색으로 들어가기)
+앱이름 대충 적기
+gady wnel nagw mjrf (비밀번호)
+maven spring starter 검색
+spring boot starter mail -> 그래들 선택, 복사
+인텔리 제이 돌아가서
+build.gradle 디펜던시에 붙여넣기
+메일 설정 -> 어플리케이션 프로퍼티
+어플리케이션 프로퍼티에서
+# gmail 설정 -> 이 설정을 가지고 JavaMailSender 객체 생성 -> @Autowired 후 사용
+spring.mail.host = smtp.gmail.com
+spring.mail.port = 587
+spring.mail.username = ksui3047@gmail.com
+spring.mail.password=hwfj gcwf zryx kzlr
+spring.mail.properties.mail.smtp.auth = true
+spring.mail.properties.mail.smtp.timeout = 5000
+spring.mail.properties.mail.smtp.starttls.enable = true

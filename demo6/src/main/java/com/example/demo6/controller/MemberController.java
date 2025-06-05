@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.*;
 import org.springframework.validation.annotation.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.*;
@@ -26,6 +27,16 @@ import java.util.*;
 public class MemberController {
   @Autowired
   private MemberService service;
+
+  // "http://localhost:8080/api/members/verify?code=" + code;
+  @GetMapping("/api/members/verify")
+  public ModelAndView verifyCheckcode(@RequestParam String code) {
+    // 이메일에서 링크를 클릭해서 체크 코드를 확인하는 작업은 리액트와 무관
+    // 그래서 응답이 ResponseEntity가 아니라 redirect가 걸려야 한다
+    // 리액트 앱은 그 redirect 주소를 처리할 화면을 가지고 있어야 한다
+    boolean result = service.verify(code);
+    return new ModelAndView("redirect:http://localhost:3000/member/verified?result=" + result);
+  }
 
   // ↓ swagger 어노테이션
   @PreAuthorize("isAnonymous()")
@@ -68,12 +79,23 @@ public class MemberController {
   @PreAuthorize("isAnonymous()")
   @Operation(summary = "임시 비밀번호 발급", description = "아이디와 이메일로 임시 비밀번호를 발급")
   @PutMapping("/api/members/password")
-  public ResponseEntity<String> getTemporaryPassword(@ModelAttribute @Valid MemberDto.GeneratePassword dto, BindingResult br) {
+  public ResponseEntity<String> getTemporaryPassword(@ModelAttribute @Valid MemberDto.FindPassword dto, BindingResult br) {
     // 발급이 될 수도 있고 이메일이나 아이디가 틀리면 발급이 안 될 수 있음
-    Optional<String> 임시비밀번호 = service.getTemporaryPassword(dto);
-    if(임시비밀번호.isPresent())
-      return ResponseEntity.ok(임시비밀번호.get());
-    return ResponseEntity.status(HttpStatus.CONFLICT).body("사용자를 찾을 수 없습니다");
+    boolean result = service.getTemporaryPassword(dto);
+    if(result)
+      return ResponseEntity.status(200).body("임시 비밀번호 발급");
+    return ResponseEntity.status(409).body("사용자를 찾을 수 없습니다");
+  }
+
+  // 비밀번호 확인
+  @PreAuthorize("isAuthenticated()")
+  @Operation(summary = "비밀번호 재확인", description = "내 정보 보기를 위한 비밀번호 재확인")
+  @GetMapping("/api/members/password")
+  public ResponseEntity<String> checkPassword(@ModelAttribute @Valid MemberDto.CheckPassword dto, BindingResult br, Principal principal) {
+    boolean result = service.checkPassword(dto, principal.getName());
+    if(result)
+      return ResponseEntity.status(200).body("확인 성공");
+    return ResponseEntity.status(409).body("확인 실패");
   }
 
   // 내 정보 보기
