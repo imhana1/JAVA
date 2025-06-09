@@ -48,4 +48,9 @@ public interface MemberDao {
 
   @Delete("delete from members where username=#{loginId}")
   int delete(String loginId);
+
+  @Update("update MEMBERS set PROFILE=#{profile} where USERNAME=#{loginId}")
+  int updateProfile(String profile, String loginId);
+
+  // 로그인은 swagger로 테스트 못해 (SecuriConfig에 저렇게 만들어놔서)
 }

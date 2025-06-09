@@ -138,4 +138,15 @@ public class MemberService {
   public void resign(String loginId) {
     memberDao.delete(loginId);
   }
+
+  public MemberDto.Read changeProfile(MultipartFile profile, String loginId) {
+    String base64Image = "";
+    try {
+      base64Image = Demo6Util.convertToBase64(profile);
+      memberDao.updateProfile(base64Image, loginId);
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+    }
+      return memberDao.findByUsername(loginId).toRead();
+  }
 }

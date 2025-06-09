@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.*;
 import org.springframework.validation.annotation.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
@@ -105,6 +106,13 @@ public class MemberController {
   public ResponseEntity<MemberDto.Read> read(Principal principal) {
     MemberDto.Read dto = service.read(principal.getName());
     return ResponseEntity.ok(dto);
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @PutMapping("/api/members/profile")
+  public ResponseEntity<MemberDto.Read> changeProfile(MultipartFile profile, Principal principal) {
+    MemberDto.Read dto = service.changeProfile(profile, principal.getName());
+    return ResponseEntity.status(200).body(dto);
   }
 
   // 비밀번호 변경
