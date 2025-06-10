@@ -108,6 +108,7 @@ public class MemberController {
     return ResponseEntity.ok(dto);
   }
 
+  // 프로필 변경
   @PreAuthorize("isAuthenticated()")
   @PutMapping("/api/members/profile")
   public ResponseEntity<MemberDto.Read> changeProfile(MultipartFile profile, Principal principal) {
