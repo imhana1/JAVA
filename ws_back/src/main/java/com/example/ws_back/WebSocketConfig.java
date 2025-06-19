@@ -2,37 +2,33 @@ package com.example.ws_back;
 
 // STOMP 웹소켓 설정
 
-import org.springframework.context.annotation.*;
-import org.springframework.messaging.simp.config.*;
-import org.springframework.web.socket.config.annotation.*;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-
-// @Configuration : 스프링 설정 파일
-// @EnableWebSocketMessageBroker : STOMP 기반 (텍스트 메시징 전용) 웹소켓 설정
+// 스프링 설정 파일
 @Configuration
+// STOMP기반(텍스트 메시징 전용)
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-  @Override
-  public void registerStompEndpoints(StompEndpointRegistry registry) {
-    // 자바스크립트로 웹소켓 접속하는 주소 (ex. /member/login)
-    // 클라이언트는 SockJS 를 이용해 /ws 주소로 접속하게 된다
-    registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
-  }
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        // 클라이언트는 SockJS를 이용해 /ws로 접속을 하게 된다
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
+    }
 
-  @Override
-  public void configureMessageBroker(MessageBrokerRegistry registry) {
-    // 웹소켓 서비스 주소(ex. 메시지를 주고받기 등 | /post/** , /member/**)
-    // 두 가지 주소를 등록하게 됨
-      // 메시지를 구독하는 주소
-      // 메시지를 발행하는 주소
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        // 클라이언트가 메시지를 수신하는 주소는 /sub로 시작한다
+        registry.enableSimpleBroker("/sub");
 
-    // 클라이언트가 메시지를 구독하는 주소는 /sub/**
-    registry.enableSimpleBroker("/sub");
-    // 클라이언트가 메시지를 보내는 주소는 /pub/**
-    registry.setApplicationDestinationPrefixes("/pub");
+        // 클라이언트는 메시지를 보내려면 /pub로 시작한다
+        registry.setApplicationDestinationPrefixes("/pub");
 
-    // A 와 B 가 채팅을 한다면
-    // 각자 채팅 메시지를 서버로 보내야한다 (발행)
-    // 서버가 보낸 채팅 메시지를 수신해야한다 (구독)
-  }
+        // A와 B가 채팅을 한다면
+        // 각자 채팅 메시지를 서버로 보내야한다(발행) : /pub/chat1
+        // 서버가 보내주는 채팅 메시지를 수신해야 한다(구독) : /sub/chat1
+    }
 }
