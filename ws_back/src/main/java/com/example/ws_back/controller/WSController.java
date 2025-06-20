@@ -44,12 +44,14 @@ public class WSController {
     // 글을 작성하면 작성되었다고 웹소켓 메시지를 보내자
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/api/message")
-    public ResponseEntity<Void> job3(String receiver, String message,Principal principal) {
-        String sender = principal.getName();
+    public ResponseEntity<Void> job3(String receiver, String message) {
+        String sender = "hana";
         if(sender.equals(receiver))
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         // receiver에게만 웹소켓 메시지를 전송
         // /sub/job3를 수신주소로 특정 사용자에게 메시지를 보낸다 -> /user/sub/job3로 수신
+
+        System.out.println(receiver);
         tpl.convertAndSendToUser(receiver, "/sub/job3", sender + "메시지");
         return ResponseEntity.ok(null);
     }
